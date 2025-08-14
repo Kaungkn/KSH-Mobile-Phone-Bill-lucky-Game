@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Password Guessing Game</title>
+<style>
+  body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
+  input { font-size: 1.2em; padding: 5px; width: 50px; text-align: center; }
+  button { font-size: 1em; padding: 5px 10px; margin-left: 10px; }
+  .message { margin-top: 20px; font-size: 1.2em; }
+</style>
+</head>
+<body>
+
+<h1>🔒 Password Guessing Game 🔒</h1>
+<p>Guess the 1-digit password (0–9). You have 3 tries!</p>
+
+<input type="number" id="guessInput" min="0" max="9">
+<button onclick="checkGuess()">Try</button>
+
+<div class="message" id="message"></div>
+
+<script>
+// Check if game has been played on this device
+if(localStorage.getItem('gamePlayed')) {
+    document.getElementById('message').innerText = "❌ You have already played this game on this device.";
+    document.getElementById('guessInput').disabled = true;
+} else {
+    const password = Math.floor(Math.random() * 10); // random 0-9
+    let tries = 0;
+    const maxTries = 3;
+
+    window.checkGuess = function() {
+        const guess = parseInt(document.getElementById('guessInput').value);
+        if(isNaN(guess)  guess < 0  guess > 9) {
+            alert("Enter a number between 0 and 9!");
+            return;
+        }
+        tries++;
+        if(guess === password) {
+            document.getElementById('message').innerText = "🎉 Correct! You guessed the password!";
+            document.getElementById('guessInput').disabled = true;
+            localStorage.setItem('gamePlayed', 'true');
+        } else if(tries >= maxTries) {
+            document.getElementById('message').innerText = ❌ Wrong! The password was ${password}. Game over.;
+            document.getElementById('guessInput').disabled = true;
+            localStorage.setItem('gamePlayed', 'true');
+        } else {
+            document.getElementById('message').innerText = ❌ Wrong! You have ${maxTries - tries} tries left.;
+        }
+        document.getElementById('guessInput').value = '';
+        document.getElementById('guessInput').focus();
+    };
+}
+</script>
+
+</body>
+</html>
